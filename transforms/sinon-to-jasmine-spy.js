@@ -157,8 +157,10 @@ module.exports = function transformer(file, api) {
 
     switch (value.property.name) {
       case 'called':
-        if (p.parent.value.type === j.MemberExpression.name
-          && p.parent.value.property.name === 'once') {
+        if (
+          p.parent.value.type === j.MemberExpression.name &&
+          p.parent.value.property.name === 'once'
+        ) {
           j(p.parent).replaceWith(
             createCall('toHaveBeenCalledTimes', [j.numericLiteral(1)], rest, containsNot));
           return rest;

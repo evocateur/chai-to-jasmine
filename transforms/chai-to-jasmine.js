@@ -21,11 +21,11 @@ module.exports = function transformer(file, api) {
   const updateExpect = util.updateExpect(j);
   const createCallChain = util.createCallChain(j);
 
-  const isExpectCall = node => (node.name === 'expect' ||
-  (node.type === j.MemberExpression.name &&
-  isExpectCall(node.object)) ||
-  (node.type === j.CallExpression.name &&
-  isExpectCall(node.callee)));
+  const isExpectCall = node => (
+    (node.name === 'expect') ||
+    (node.type === j.MemberExpression.name && isExpectCall(node.object)) ||
+    (node.type === j.CallExpression.name && isExpectCall(node.callee))
+  );
 
   const typeOf = (value, args, containsNot) => {
     switch (args[0].value) {
@@ -152,8 +152,9 @@ module.exports = function transformer(file, api) {
 
       switch (p.value.callee.property.name.toLowerCase()) {
         case 'equal':
-          return containsDeep ? createCall('toEqual', args, rest, containsNot) :
-            createCall('toBe', args, rest, containsNot);
+          return containsDeep
+            ? createCall('toEqual', args, rest, containsNot)
+            : createCall('toBe', args, rest, containsNot);
         case 'throw':
           return createCall('toThrowError', args, rest, containsNot);
         case 'include':
