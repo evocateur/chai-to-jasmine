@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Mapping most of the sinon calls to jasmine equivalent calls.
  * check https://github.com/domenic/sinon-chai for more info.

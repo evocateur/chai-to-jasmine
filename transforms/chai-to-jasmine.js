@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const util = require('./util');
 const path = require('path');
 // not implemented respondTo
