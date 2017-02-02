@@ -11,6 +11,7 @@ onChangeSpy.should.have.been.calledWithExactly(1, 2, 3);
 onChangeSpy.should.have.been.calledWithMatch('test', 1, /regex/);
 
 expect(onChangeSpy).to.have.been.calledWith(1);
+expect(onChangeSpy.callCount).toBe(7);
 
 onChangeSpy.should.have.been.called.once;
 onChangeSpy.lastCall.args[0].should.have.property('on', true);

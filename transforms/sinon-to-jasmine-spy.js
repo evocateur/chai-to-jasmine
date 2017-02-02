@@ -6,8 +6,9 @@
  */
 const util = require('./util');
 
-const properties = ['called', 'calledOnce', 'calledTwice', 'calledThrice'];
+const properties = ['callCount', 'called', 'calledOnce', 'calledTwice', 'calledThrice'];
 const fns = ['callCount', 'calledWith', 'calledWithExactly', 'calledWithMatch'];
+
 module.exports = function transformer(file, api) {
   const j = api.jscodeshift;
   const root = j(file.source);
@@ -17,6 +18,26 @@ module.exports = function transformer(file, api) {
   const chainContains = util.chainContains(j);
   const getAllBefore = util.getNodeBeforeMemberExpression(j);
   const createCallChain = util.createCallChain(j);
+
+  const createPropertyChain = (...names) => {
+    const fields = names.reverse();
+
+    let field = j.identifier(fields.pop());
+    let node = field;
+
+    while (fields.length) {
+      field = j.identifier(fields.pop());
+      node = j.memberExpression(node, field);
+    }
+
+    return node;
+  };
+
+  const isExpectArgs = node => (
+    node.parent &&
+    node.parent.value.type === j.CallExpression.name &&
+    node.parent.value.callee.name === 'expect'
+  );
 
   function addMatcher(node) {
     switch (node.type) {
@@ -65,6 +86,35 @@ module.exports = function transformer(file, api) {
         return p.node;
     }
   }).size();
+
+  // rewrite sinon properties in expect() arguments
+  mutations += root.find(j.MemberExpression, {
+    property: {
+      name: name => properties.indexOf(name) !== -1
+    }
+  })
+  .filter(isExpectArgs)
+  .replaceWith((p) => {
+    switch (p.value.property.name) {
+      case 'callCount':
+        // expect(stub.callCount).to.equal(n) -> expect(stub.mock.calls.length).to.equal(n)
+        return createPropertyChain(p.value.object.name, 'mock', 'calls', 'length');
+      /*
+        TODO:
+      case 'called':
+        // expect(stub.called).to.be.ok -> expect(stub).toHaveBeenCalled()
+      case 'calledOnce':
+        // expect(stub.calledOnce).to.be.ok -> expect(stub).toHaveBeenCalledTimes(1)
+      case 'calledTwice':
+        // expect(stub.calledTwice).to.be.ok -> expect(stub).toHaveBeenCalledTimes(2)
+      case 'calledThrice':
+        // expect(stub.calledThrice).to.be.ok -> expect(stub).toHaveBeenCalledTimes(3)
+      */
+      default:
+        return p.node;
+    }
+  })
+  .size();
 
   const updateWithArgs = (rest, path) => {
     mutations += j(rest)

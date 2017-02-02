@@ -11,6 +11,7 @@ onChangeSpy.should.toHaveBeenCalledWith(1, 2, 3);
 onChangeSpy.should.toHaveBeenCalledWith(expect.stringMatching('test'), 1, expect.stringMatching(/regex/));
 
 expect(onChangeSpy).toHaveBeenCalledWith(1);
+expect(onChangeSpy.mock.calls.length).toBe(7);
 
 onChangeSpy.should.toHaveBeenCalledTimes(1);
 onChangeSpy.calls.mostRecent().args[0].should.have.property('on', true);
