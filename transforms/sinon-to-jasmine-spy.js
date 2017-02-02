@@ -146,8 +146,9 @@ module.exports = function transformer(file, api) {
     }
   }).replaceWith((p) => {
     const { value } = p;
-    let rest = getAllBefore('have', value);
     const containsNot = chainContains('not', value, 'have');
+
+    let rest = getAllBefore('have', value);
     if (chainContains('to', rest)) {
       rest = getAllBefore('to', value);
     }
@@ -185,8 +186,9 @@ module.exports = function transformer(file, api) {
   })
   .replaceWith((p) => {
     const haveOrAlways = name => ['have', 'always'].indexOf(name) !== -1;
-    let rest = getAllBefore(haveOrAlways, p.value.callee);
     const containsNot = chainContains('not', p.value, haveOrAlways);
+
+    let rest = getAllBefore(haveOrAlways, p.value.callee);
     if (chainContains('to', rest)) {
       rest = getAllBefore('to', p.value.callee);
     }
