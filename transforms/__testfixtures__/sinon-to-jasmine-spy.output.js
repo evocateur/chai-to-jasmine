@@ -1,4 +1,4 @@
-const onChangeSpy = jasmine.createSpy();
+const onChangeSpy = jest.fn();
 
 onChangeSpy.should.toHaveBeenCalledTimes(1);
 onChangeSpy.should.toHaveBeenCalledTimes(2);

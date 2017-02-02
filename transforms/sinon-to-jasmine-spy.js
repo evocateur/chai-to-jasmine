@@ -43,9 +43,10 @@ module.exports = function transformer(file, api) {
     switch (p.value.callee.property.name) {
       case 'spy': {
         if (p.value.arguments.length === 0) {
-          return createCallChain(['jasmine', 'createSpy'], []);
+          return createCallChain(['jest', 'fn'], []);
         } else if (p.value.arguments.length === 2) {
-          return createCallChain(['spyOn'], p.value.arguments);
+          console.warn('sinon.spy(obj, method) will be handled in jest 19');
+          // return createCallChain(['jest', 'spyOn'], p.value.arguments);
         }
         return p.node;
       }
