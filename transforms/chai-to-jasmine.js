@@ -217,22 +217,7 @@ module.exports = function transformer(file, api) {
         case 'lengthof':
           return createCall('toHaveLength', args, rest, containsNot);
         case 'property':
-          if (containsDeep) {
-            const relativePath = path.relative(process.cwd(), file.path);
-            console.warn(`deep.property is an unsupported keyword, please check ${relativePath}`);
-          }
-          return args.length === 1 ?
-            createCall('toBeTruthy', [],
-              updateExpect(value, node => j.callExpression(
-                j.memberExpression(node, j.identifier('hasOwnProperty')),
-                [args[0]]
-              ))
-            ) :
-            createCall('toEqual', [args[1]],
-              updateExpect(value, node => j.memberExpression(
-                node, args[0], true
-              ))
-            );
+          return createCall('toHaveProperty', args, rest, containsNot);
         case 'ownproperty':
           return createCall('toBeTruthy', [],
             updateExpect(value, node => j.callExpression(

@@ -19,5 +19,11 @@ describe('Instantiating TextField', () => {
 
 // simple referencing
 var obj = { foo: 'bar' };
-expect(obj.hasOwnProperty('foo')).toBeTruthy();
-expect(obj['foo']).toEqual('bar');
+expect(obj).toHaveProperty('foo');
+expect(obj).toHaveProperty('foo', 'bar');
+
+// deep referencing
+var deep = { foo: { bar: 'baz', qux: [1, 2, 3] } };
+expect(deep).toHaveProperty('foo.bar');
+expect(deep).toHaveProperty('foo.bar', 'baz');
+expect(deep).toHaveProperty('foo.qux', [1, 2, 3]);

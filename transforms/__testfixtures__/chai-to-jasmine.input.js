@@ -21,3 +21,9 @@ describe('Instantiating TextField', () => {
 var obj = { foo: 'bar' };
 expect(obj).to.have.property('foo');
 expect(obj).to.have.property('foo', 'bar');
+
+// deep referencing
+var deep = { foo: { bar: 'baz', qux: [1, 2, 3] } };
+expect(deep).to.have.property('foo.bar');
+expect(deep).to.have.property('foo.bar', 'baz');
+expect(deep).to.have.property('foo.qux', [1, 2, 3]);
