@@ -20,3 +20,5 @@ const { date } = onChangeSpy.getCall(0).args[0];
 it('should be calledWith', () => {
   onChangeSpy.withArgs({test: '1'}).should.have.been.calledOnce;
 });
+
+const emptyStub = sinon.stub();

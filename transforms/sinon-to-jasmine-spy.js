@@ -51,7 +51,7 @@ module.exports = function transformer(file, api) {
         return p.node;
       }
       case 'stub':
-        return createCallChain(['spyOn'], p.value.arguments);
+        return createCallChain(['jest', 'fn'], p.value.arguments);
       case 'match':
         return p.value.arguments;
       case 'useFakeTimers':

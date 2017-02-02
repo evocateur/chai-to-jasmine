@@ -21,3 +21,5 @@ it('should be calledWith', () => {
   onChangeSpy.should.toHaveBeenCalledWith({test: '1'});
   onChangeSpy.should.toHaveBeenCalledTimes(1);
 });
+
+const emptyStub = jest.fn();
