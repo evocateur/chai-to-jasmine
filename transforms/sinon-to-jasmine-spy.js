@@ -216,7 +216,10 @@ module.exports = function transformer(file, api) {
     property: {
       name: 'lastCall'
     }
-  }).replaceWith(p => createCallChain([p.value.object, 'calls', 'mostRecent'], [])).size();
+  }).replaceWith(p =>
+    createCallChain([p.value.object, 'calls', 'mostRecent'], [])
+    // TODO: obj.mock.calls[obj.mock.calls.length - 1]
+  ).size();
 
   mutations += root.find(j.MemberExpression, {
     property: {
