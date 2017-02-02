@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /**
- * Mapping most of the sinon calls to jasmine equivalent calls.
+ * Mapping most of the sinon calls to jest equivalent calls.
  * check https://github.com/domenic/sinon-chai for more info.
  * @type {[*]}
  */
@@ -22,9 +22,9 @@ module.exports = function transformer(file, api) {
     switch (node.type) {
       case j.RegExpLiteral.name:
       case j.StringLiteral.name:
-        return createCallChain(['jasmine', 'stringMatching'], [node]);
+        return createCallChain(['expect', 'stringMatching'], [node]);
       case j.ObjectExpression.name:
-        return createCallChain(['jasmine', 'objectContaining'], [node]);
+        return createCallChain(['expect', 'objectContaining'], [node]);
       default:
         return node;
     }

@@ -8,7 +8,7 @@ onChangeSpy.should.not.toHaveBeenCalled();
 onChangeSpy.should.toHaveBeenCalledTimes(7);
 onChangeSpy.should.toHaveBeenCalledWith(1, 2, 3);
 onChangeSpy.should.toHaveBeenCalledWith(1, 2, 3);
-onChangeSpy.should.toHaveBeenCalledWith(jasmine.stringMatching('test'), 1, jasmine.stringMatching(/regex/));
+onChangeSpy.should.toHaveBeenCalledWith(expect.stringMatching('test'), 1, expect.stringMatching(/regex/));
 
 expect(onChangeSpy).toHaveBeenCalledWith(1);
 
