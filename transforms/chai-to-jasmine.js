@@ -215,10 +215,7 @@ module.exports = function transformer(file, api) {
           );
         case 'length':
         case 'lengthof':
-          return createCall('toBe', args,
-            updateExpect(value, node => j.memberExpression(node, j.identifier('length'))),
-            containsNot
-          );
+          return createCall('toHaveLength', args, rest, containsNot);
         case 'property':
           if (containsDeep) {
             const relativePath = path.relative(process.cwd(), file.path);
