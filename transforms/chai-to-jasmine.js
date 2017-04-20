@@ -202,8 +202,6 @@ module.exports = function transformer(file, api) {
           }
           if (args[0].type === j.StringLiteral.name) {
             return typeOf(value, args, containsNot);
-            return createCall('toBe', args,
-              updateExpect(value, node => j.unaryExpression('typeof', node)), containsNot);
           }
           return createCall('toBe', [j.booleanLiteral(true)],
             updateExpect(value, node => j.binaryExpression('instanceof', node, args[0])),
@@ -252,6 +250,7 @@ module.exports = function transformer(file, api) {
   mutations += updateCallExpressions();
   mutations += updateMemberExpressions();
 
+  // eslint-disable-next-line global-require
   return mutations ? root.toSource({ parser: require('babel-eslint'), quote: 'single' }) : null;
 };
 
